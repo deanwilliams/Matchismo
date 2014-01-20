@@ -38,11 +38,15 @@
 
 - (IBAction)touchDealButton {
     self.game = nil;
+    self.modeSelector.enabled = YES;
     [self updateUI];
 }
 
 - (IBAction)touchCardButton:(UIButton *)sender
 {
+    if (self.modeSelector.enabled == YES) {
+        self.modeSelector.enabled = NO;
+    }
     NSUInteger cardIndex = [self.cardButtons indexOfObject:sender];
     [self.game chooseCardAtIndex:cardIndex];
     [self updateUI];
