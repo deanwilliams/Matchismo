@@ -16,15 +16,18 @@
 @property (nonatomic, strong) CardMatchingGame *game;
 @property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *cardButtons;
 @property (weak, nonatomic) IBOutlet UILabel *scoreLabel;
-
+@property (weak, nonatomic) IBOutlet UISegmentedControl *modeSelector;
 @end
 
 @implementation CardGameViewController
 
 - (CardMatchingGame *)game
 {
-    if (!_game) _game = [[CardMatchingGame alloc] initWithCardCount:[self.cardButtons count]
-                                                          usingDeck:[self createDeck]];
+    if (!_game) {
+        _game = [[CardMatchingGame alloc] initWithCardCount:[self.cardButtons count]
+                                                  usingDeck:[self createDeck]];
+        [self touchGameTypeButton:self.modeSelector];
+    }
     return _game;
 }
 
@@ -33,11 +36,21 @@
     return [[PlayingCardDeck alloc] init];
 }
 
+- (IBAction)touchDealButton {
+    self.game = nil;
+    [self updateUI];
+}
+
 - (IBAction)touchCardButton:(UIButton *)sender
 {
     NSUInteger cardIndex = [self.cardButtons indexOfObject:sender];
     [self.game chooseCardAtIndex:cardIndex];
     [self updateUI];
+}
+
+- (IBAction)touchGameTypeButton:(UISegmentedControl *)sender {
+    self.game.maxMatchingCards =
+    [[sender titleForSegmentAtIndex:sender.selectedSegmentIndex] integerValue];
 }
 
 - (void)updateUI
