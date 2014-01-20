@@ -12,6 +12,8 @@
 @interface CardMatchingGame()
 @property (nonatomic, readwrite) NSInteger score;
 @property (nonatomic, strong) NSMutableArray *cards; // of Card
+@property (nonatomic, strong) NSArray *lastChosenCards;
+@property (nonatomic, readwrite) NSInteger lastScore;
 @end
 
 @implementation CardMatchingGame
@@ -66,23 +68,25 @@ static const int COST_TO_CHOOSE = 1;
                     [otherChosenCards addObject:otherCard];
                 }
             }
+            self.lastScore = 0;
+            self.lastChosenCards = [otherChosenCards arrayByAddingObject:card];
             // match against multiple other cards
             if ([otherChosenCards count] + 1 == self.maxMatchingCards) {
                 int matchScore = [card match:otherChosenCards];
                 if (matchScore) {
-                    self.score += matchScore * MATCH_BONUS;
+                    self.lastScore = matchScore * MATCH_BONUS;
                     card.matched = YES;
                     for (Card *otherCard in otherChosenCards) {
                         otherCard.matched = YES;
                     }
                 } else {
-                    self.score -= MISMATCH_PENALTY;
+                    self.lastScore -= MISMATCH_PENALTY;
                     for (Card *otherCard in otherChosenCards) {
                         otherCard.chosen = NO;
                     }
                 }
             }
-            self.score -= COST_TO_CHOOSE;
+            self.score += self.lastScore - COST_TO_CHOOSE;
             card.chosen = YES;
         }
     }

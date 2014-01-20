@@ -16,6 +16,7 @@
 @property (nonatomic, strong) CardMatchingGame *game;
 @property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *cardButtons;
 @property (weak, nonatomic) IBOutlet UILabel *scoreLabel;
+@property (weak, nonatomic) IBOutlet UILabel *flipDescription;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *modeSelector;
 @end
 
@@ -62,11 +63,34 @@
     for (UIButton *cardButton in self.cardButtons) {
         NSUInteger cardIndex = [self.cardButtons indexOfObject:cardButton];
         Card *card = [self.game cardAtIndex:cardIndex];
-        [cardButton setTitle:[self titleForCard:card] forState:UIControlStateNormal];
-        [cardButton setBackgroundImage:[self backgroundImageForCard:card] forState:UIControlStateNormal];
-        cardButton.enabled = !card.isMatched;
+        [cardButton setTitle:[self titleForCard:card]
+                    forState:UIControlStateNormal];
+        [cardButton setBackgroundImage:[self backgroundImageForCard:card]
+                              forState:UIControlStateNormal];
+        cardButton.enabled = !card.matched;
     }
     self.scoreLabel.text = [NSString stringWithFormat:@"Score: %ld", (long)self.game.score];
+    
+    if (self.game) {
+        NSString *description = @"";
+        
+        if ([self.game.lastChosenCards count]) {
+            NSMutableArray *cardContents = [NSMutableArray array];
+            for (Card *card in self.game.lastChosenCards) {
+                [cardContents addObject:card.contents];
+            }
+            description = [cardContents componentsJoinedByString:@" "];
+        }
+        
+        if (self.game.lastScore > 0) {
+            description = [NSString stringWithFormat:@"Matched %@ for %ld points.", description, (long)self.game.lastScore];
+        } else if (self.game.lastScore < 0) {
+            
+            description = [NSString stringWithFormat:@"%@ don’t match! %ld point penalty!", description, -(long)self.game.lastScore];
+        }
+        
+        self.flipDescription.text = description;
+    }
 }
 
 - (NSString *)titleForCard:(Card *)card

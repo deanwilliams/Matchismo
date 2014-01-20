@@ -190,10 +190,19 @@
                                     <action selector="touchGameTypeButton:" destination="vXZ-lx-hvc" eventType="valueChanged" id="Qma-5N-H8d"/>
                                 </connections>
                             </segmentedControl>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DFs-15-mKd">
+                                <rect key="frame" x="20" y="491" width="280" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="tintColor" cocoaTouchSystemColor="lightTextColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.50196081399917603" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
                     <connections>
+                        <outlet property="flipDescription" destination="DFs-15-mKd" id="bJc-gW-Vkt"/>
                         <outlet property="modeSelector" destination="6zf-eR-Wzz" id="RGI-Tk-Cby"/>
                         <outlet property="scoreLabel" destination="yFN-sR-2f7" id="qg9-Nx-SDW"/>
                         <outletCollection property="cardButtons" destination="gic-qA-tDr" id="5lj-Pt-MaJ"/>
